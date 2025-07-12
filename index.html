@@ -61,25 +61,19 @@
                 <div class="filter-section">
                     <h4>Filters</h4>
                     <div class="row">
-                        <div class="col-md-3">
-                            <label for="districtFilter" class="form-label">District</label>
-                            <select id="districtFilter" class="form-select">
-                                <option value="">All Districts</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label for="mandalFilter" class="form-label">Mandal/Municipality</label>
                             <select id="mandalFilter" class="form-select">
                                 <option value="">All Mandals</option>
                             </select>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label for="sectorFilter" class="form-label">Occupation/Sector</label>
                             <select id="sectorFilter" class="form-select">
                                 <option value="">All Sectors</option>
                             </select>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label for="ruralFilter" class="form-label">Rural/Urban</label>
                             <select id="ruralFilter" class="form-select">
                                 <option value="">All</option>
@@ -321,7 +315,7 @@
             loadData();
             
             // Set up filter event listeners
-            $('#districtFilter, #mandalFilter, #sectorFilter, #ruralFilter').change(function() {
+            $('#mandalFilter, #sectorFilter, #ruralFilter').change(function() {
                 applyFilters();
             });
             
@@ -453,17 +447,9 @@
         }
 
         function populateFilters(data) {
-            // Get unique values for each filter
-            const districts = [...new Set(data.map(item => item['Name of the District']))].filter(Boolean);
+            // Get unique values for filters
             const mandals = [...new Set(data.map(item => item['Name of the Mandal/Municipality']))].filter(Boolean);
             const sectors = [...new Set(data.map(item => item['Occupation/Sector/Profession/NGO']))].filter(Boolean);
-
-            // Populate district filter
-            const districtFilter = $('#districtFilter');
-            districtFilter.empty().append('<option value="">All Districts</option>');
-            districts.forEach(district => {
-                districtFilter.append(`<option value="${district}">${district}</option>`);
-            });
 
             // Populate mandal filter
             const mandalFilter = $('#mandalFilter');
@@ -481,14 +467,12 @@
         }
 
         function applyFilters() {
-            const district = $('#districtFilter').val();
             const mandal = $('#mandalFilter').val();
             const sector = $('#sectorFilter').val();
             const ruralUrban = $('#ruralFilter').val();
 
             let filteredData = allData.filter(item => {
-                return (!district || item['Name of the District'] === district) &&
-                       (!mandal || item['Name of the Mandal/Municipality'] === mandal) &&
+                return (!mandal || item['Name of the Mandal/Municipality'] === mandal) &&
                        (!sector || item['Occupation/Sector/Profession/NGO'] === sector) &&
                        (!ruralUrban || item['Rural/Urban'] === ruralUrban);
             });
